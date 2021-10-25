@@ -6,8 +6,12 @@ class Categories extends React.Component {
     super();
     this.state = {
       categories: [],
-    }
+    };
     this.getCategoriesFromAPI = this.getCategoriesFromAPI.bind(this);
+  }
+
+  componentDidMount() {
+    this.getCategoriesFromAPI();
   }
 
   async getCategoriesFromAPI() {
@@ -15,15 +19,11 @@ class Categories extends React.Component {
     this.setState({ categories });
   }
 
-  componentDidMount() {
-    this.getCategoriesFromAPI();
-  }
-  
   render() {
     const { categories } = this.state;
     return (
       <aside>
-        {categories.map(categorie => (
+        {categories.map((categorie) => (
           <p key={ categorie.id }>
             <label data-testid="category" htmlFor={ categorie.id }>
               <input
@@ -35,7 +35,7 @@ class Categories extends React.Component {
           </p>
         ))}
       </aside>
-    )
+    );
   }
 }
 
