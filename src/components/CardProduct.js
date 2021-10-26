@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default class CardProduct extends Component {
   render() {
-    // console.log(this.props);
-    const { product: { price, thumbnail, title } } = this.props;
+    const { product: { price, thumbnail, title, id } } = this.props;
     return (
       <div data-testid="product">
-        <h4>{title}</h4>
-        <img width="50px" src={ thumbnail } alt="product logo" />
-        <p>{price}</p>
+        <Link
+          to={ `/detailProduct/${id}` }
+          data-testid="product-detail-link"
+        >
+          <h4>{title}</h4>
+          <img width="50px" src={ thumbnail } alt="product logo" />
+          <p>{price}</p>
+        </Link>
       </div>
     );
   }
@@ -20,5 +25,6 @@ CardProduct.propTypes = {
     price: PropTypes.number,
     thumbnail: PropTypes.string,
     title: PropTypes.string,
+    id: PropTypes.string,
   }).isRequired,
 };
