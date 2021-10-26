@@ -1,35 +1,10 @@
 import React, { Component } from 'react';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import PropTypes from 'prop-types';
 import CardProduct from './CardProduct';
 
 export default class SearchProducts extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      query: '',
-      queryResults: [],
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleChange({ target }) {
-    const { name } = target;
-    const value = target.type === 'checked' ? target.checked : target.value;
-
-    this.setState({ [name]: value });
-  }
-
-  async handleClick() {
-    const { query } = this.state;
-    const queryResults = await getProductsFromCategoryAndQuery(query);
-    this.setState({ queryResults: queryResults.results });
-  }
-
   render() {
-    const { query, queryResults } = this.state;
+    const { query, queryResults, handleChange, handleClick } = this.props;
     return (
       <main>
         <section>
@@ -39,13 +14,13 @@ export default class SearchProducts extends Component {
               type="text"
               data-testid="query-input"
               value={ query }
-              onChange={ this.handleChange }
+              onChange={ handleChange }
             />
           </label>
           <button
             type="button"
             data-testid="query-button"
-            onClick={ this.handleClick }
+            onClick={ handleClick }
           >
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:
@@ -71,3 +46,10 @@ export default class SearchProducts extends Component {
     );
   }
 }
+
+SearchProducts.propTypes = {
+  query: PropTypes.string.isRequired,
+  queryResults: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired,
+};
