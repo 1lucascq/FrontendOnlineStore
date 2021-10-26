@@ -464,7 +464,7 @@ A alma do site é a sua lógica de busca e listagem de produtos. Após digitar s
   * Adicione o atributo `data-testid` com o valor `query-button` no elemento que dispara a chamada para a API com o termo de busca pesquisado.
   * Adicione o atributo `data-testid` com o valor `product` nos elementos que possuem os dados dos produtos.
 
-Obs: é importante ressaltar a necessicadade de utilizar a função `getProductsFromCategoryAndQuery`, que é mencionada no requisito 1 para a validação dos testes.
+Obs: é importante ressaltar a necessicadade de utilizar a função `getProductsFromCategoryAndQuery` **NA ROTA `/`**, que é mencionada no requisito 1 para a validação dos testes.
 
 O que será verificado:
 ```
@@ -497,7 +497,7 @@ A exibição detalhada de um produto será a página para exibir tudo o que se t
   * Adicione o atributo `data-testid` com o valor `product-detail-link` no elemento que ao ser clicado, enviará a pessoa que usa a aplicação para a página de detalhes do produto. Você deve adicionar esse atributo para todos os produtos.
   * Adicione o atributo `data-testid` com o valor `product-detail-name` no elemento que possui o nome do produto na tela de detalhes.
 
-Obs: é importante ressaltar a necessicadade de utilizar a função `getProductsFromCategoryAndQuery`, que é mencionada no requisito 1 para a validação dos testes.
+Obs.: Você pode usar um endpoint mais específico para pegar os detalhes do produto, ex: https://api.mercadolibre.com/items/${id}
 
 O que será verificado:
 ```
