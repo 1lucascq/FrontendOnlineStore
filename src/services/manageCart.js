@@ -2,24 +2,43 @@ if (!JSON.parse(localStorage.getItem('cartItems'))) {
   localStorage.setItem('cartItems', JSON.stringify([]));
 }
 
-const readFavoriteProduct = () => JSON.parse(localStorage.getItem('cartItems'));
+const readCartProduct = () => JSON.parse(localStorage.getItem('cartItems'));
 
-const saveFavoriteProduct = (favoriteProduct) => localStorage
-  .setItem('cartItems', JSON.stringify(favoriteProduct));
+const saveCartProduct = (cartProduct) => localStorage
+  .setItem('cartItems', JSON.stringify(cartProduct));
 
 export const addProduct = (product) => {
-  const favoriteProduct = readFavoriteProduct();
-  if (product) {
-    saveFavoriteProduct([...favoriteProduct, product]);
+  const cartProduct = readCartProduct();
+  const { id, price, thumbnail, title } = product;
+
+  const item = {
+    id,
+    title,
+    price,
+    thumbnail,
+    quantity: 1,
+  };
+
+  const cartProductsIds = cartProduct.map((thisItem) => thisItem.id);
+
+  if (cartProductsIds.filter((cartItem) => cartItem === item.id) < 1) {
+    if (product) {
+      saveCartProduct([...cartProduct, item]);
+    }
+
+    if (!cartProduct) {
+      saveCartProduct(item);
+    }
   }
 };
+
 // Ajustar trackId
 export const removeProduct = (product) => {
-  const favoriteProduct = readFavoriteProduct();
-  saveFavoriteProduct(favoriteProduct.filter((s) => s.trackId !== product.trackId));
+  const cartProduct = readCartProduct();
+  saveCartProduct(cartProduct.filter((item) => item.id !== product.id));
 };
 
-export const getFavoriteProduct = () => {
-  const favoriteProduct = readFavoriteProduct();
-  return favoriteProduct;
+export const getCartProduct = () => {
+  const cartProduct = readCartProduct();
+  return cartProduct;
 };

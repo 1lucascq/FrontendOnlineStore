@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getFavoriteProduct } from '../services/manageCart';
+import { getCartProduct, removeProduct } from '../services/manageCart';
 
 export default class ShoppingCart extends Component {
   constructor() {
@@ -8,33 +8,54 @@ export default class ShoppingCart extends Component {
       shoppingCartItems: [],
     };
     this.getLocalStorageItems = this.getLocalStorageItems.bind(this);
-    this.quantity = this.quantity.bind(this);
+    this.increaseQuantity = this.increaseQuantity.bind(this);
+    this.decreaseQuantity = this.decreaseQuantity.bind(this);
   }
 
   componentDidMount() {
     this.getLocalStorageItems();
-    /* console.log('DidMount'); */
   }
 
   getLocalStorageItems() {
-    const shoppingCartItems = getFavoriteProduct();
-    /* console.log(shoppingCartItems, 'oi'); */
+    const shoppingCartItems = getCartProduct();
     this.setState({
       shoppingCartItems,
     });
   }
 
-  quantity(product) {
+  increaseQuantity(product) {
     const { shoppingCartItems } = this.state;
-    const sameProductArray = shoppingCartItems.filter((item) => (
-      item.id === product.id
-    ));
-    return sameProductArray.length;
+    const { id, quantity } = product;
+    const item = shoppingCartItems
+      .map((it) => (it.id === id ? { ...it, quantity: quantity + 1 } : it));
+
+    this.setState({
+      shoppingCartItems: item,
+    });
+  }
+
+  decreaseQuantity(product) {
+    const { shoppingCartItems } = this.state;
+    const { id, quantity } = product;
+    const cartItems = shoppingCartItems
+      .map((it) => (it.id === id ? { ...it, quantity: quantity - 1 } : it));
+
+    if (quantity < 2) return this.updateState(product);
+
+    this.setState({
+      shoppingCartItems: cartItems,
+    });
+  }
+
+  updateState(product) {
+    const { shoppingCartItems } = this.state;
+    removeProduct(product);
+    const updatedCart = shoppingCartItems.filter((item) => item.id !== product.id);
+    this.setState({ shoppingCartItems: updatedCart });
   }
 
   render() {
     const { shoppingCartItems } = this.state;
-
     if (shoppingCartItems.length < 1) {
       return (
         <div>
@@ -42,16 +63,40 @@ export default class ShoppingCart extends Component {
         </div>
       );
     }
-    console.log('render', shoppingCartItems);
+
     return (
-      // Fazer filter para não aparecer repetido
       <div>
         {shoppingCartItems.map((product) => (
           <div key={ product.id }>
             <p data-testid="shopping-cart-product-name">{product.title}</p>
-            <p data-testid="shopping-cart-product-quantity">{this.quantity(product)}</p>
+            <button
+              type="button"
+              onClick={ () => this.updateState(product) }
+            >
+              X
+            </button>
+            <button
+              type="button"
+              onClick={ () => this.decreaseQuantity(product) }
+              data-testid="product-decrease-quantity"
+            >
+              -
+            </button>
+            <p data-testid="shopping-cart-product-quantity">{product.quantity}</p>
+            <button
+              type="button"
+              onClick={ () => this.increaseQuantity(product) }
+              data-testid="product-increase-quantity"
+            >
+              +
+            </button>
           </div>
         ))}
+        <button
+          type="button"
+        >
+          Finalizar Compra
+        </button>
       </div>
     );
   }
