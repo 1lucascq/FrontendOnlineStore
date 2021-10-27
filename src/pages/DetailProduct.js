@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { saveReview, getFavoriteProduct } from '../services/manageCart';
+import { Link } from 'react-router-dom';
+import { saveReview, getFavoriteProduct, addProduct } from '../services/manageCart';
 
 export default class DetailProduct extends Component {
   constructor() {
@@ -11,11 +12,12 @@ export default class DetailProduct extends Component {
         title: '',
         price: '',
         thumbnail: '',
-        reviews: [],
       },
+      reviews: [],
     };
-    this.saveLocalStorage = this.saveLocalStorage.bind(this);
+    this.saveReviewLocalStorage = this.saveReviewLocalStorage.bind(this);
     this.getReviewLocalStorage = this.getReviewLocalStorage.bind(this);
+    this.saveProductLocalStorage = this.saveProductLocalStorage.bind(this);
   }
 
   async componentDidMount() {
@@ -32,12 +34,17 @@ export default class DetailProduct extends Component {
     });
   }
 
-  saveLocalStorage(event) {
+  saveReviewLocalStorage(event) {
     event.preventDefault();
     const { match: { params: { id } } } = this.props;
     const { emailReview, radioReview, textAreaReview } = this.props;
     const review = { emailReview, radioReview, textAreaReview, id };
     saveReview(review);
+  }
+
+  saveProductLocalStorage() {
+    const { productDetail } = this.state;
+    addProduct(productDetail);
   }
 
   findDetailProduct() {
@@ -48,7 +55,6 @@ export default class DetailProduct extends Component {
     });
   }
 
-  // A
   render() {
     const { productDetail:
        { title, price, thumbnail },
@@ -109,7 +115,13 @@ export default class DetailProduct extends Component {
                     value={ textAreaReview }
                     onChange={ handleChange }
                   />
-                  <button onClick={ this.saveLocalStorage } type="submit">Avaliar</button>
+                  <button
+                    onClick={ this.saveReviewLocalStorage }
+                    type="button"
+                  >
+                    Avaliar
+
+                  </button>
                 </form>
               </div>
               <div>
@@ -128,6 +140,25 @@ export default class DetailProduct extends Component {
               </div>
             </div>
           )}
+        <button
+          data-testid="product-detail-add-to-cart"
+          onClick={ this.saveInLocalStorage }
+          type="button"
+        >
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs0BWuHgxw4SK8_
+            8IPduATr0KXh4mgQjxIDA&usqp=CAU"
+            alt="logo cart"
+            width="30px"
+          />
+        </button>
+        <Link data-testid="shopping-cart-button" to="/shoppingCart">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs0BWuHgxw4SK8_
+            8IPduATr0KXh4mgQjxIDA&usqp=CAU"
+            alt="logo cart"
+          />
+        </Link>
       </div>
     );
   }
@@ -140,8 +171,8 @@ DetailProduct.propTypes = {
     }),
   }).isRequired,
   handleChange: PropTypes.func.isRequired,
-  queryResults: PropTypes.string.isRequired,
   emailReview: PropTypes.string.isRequired,
   radioReview: PropTypes.string.isRequired,
   textAreaReview: PropTypes.string.isRequired,
+  queryResults: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

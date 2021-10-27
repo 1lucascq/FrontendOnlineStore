@@ -13,12 +13,10 @@ export default class ShoppingCart extends Component {
 
   componentDidMount() {
     this.getLocalStorageItems();
-    /* console.log('DidMount'); */
   }
 
   getLocalStorageItems() {
     const shoppingCartItems = getFavoriteProduct();
-    /* console.log(shoppingCartItems, 'oi'); */
     this.setState({
       shoppingCartItems,
     });
@@ -42,7 +40,6 @@ export default class ShoppingCart extends Component {
         </div>
       );
     }
-    console.log('render', shoppingCartItems);
     return (
       // Fazer filter para não aparecer repetido
       <div>
