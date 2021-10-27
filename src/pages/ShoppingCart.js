@@ -8,11 +8,12 @@ export default class ShoppingCart extends Component {
       shoppingCartItems: [],
     };
     this.getLocalStorageItems = this.getLocalStorageItems.bind(this);
+    this.quantity = this.quantity.bind(this);
   }
 
   componentDidMount() {
     this.getLocalStorageItems();
-    console.log('DidMount');
+    /* console.log('DidMount'); */
   }
 
   getLocalStorageItems() {
@@ -33,17 +34,17 @@ export default class ShoppingCart extends Component {
 
   render() {
     const { shoppingCartItems } = this.state;
-    console.log(shoppingCartItems);
 
-    if (!shoppingCartItems) {
+    if (shoppingCartItems.length < 1) {
       return (
         <div>
           <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
         </div>
       );
     }
-
+    console.log('render', shoppingCartItems);
     return (
+      // Fazer filter para não aparecer repetido
       <div>
         {shoppingCartItems.map((product) => (
           <div key={ product.id }>
