@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { saveReview, getCartProduct, addProduct } from '../services/manageCart';
 
 export default class DetailProduct extends Component {
   constructor() {
@@ -11,11 +13,38 @@ export default class DetailProduct extends Component {
         price: '',
         thumbnail: '',
       },
+      reviews: [],
     };
+    this.saveReviewLocalStorage = this.saveReviewLocalStorage.bind(this);
+    this.getReviewLocalStorage = this.getReviewLocalStorage.bind(this);
+    this.saveProductLocalStorage = this.saveProductLocalStorage.bind(this);
   }
 
   async componentDidMount() {
     this.findDetailProduct();
+    this.getReviewLocalStorage();
+  }
+
+  getReviewLocalStorage() {
+    const results = getCartProduct('commentReview');
+    const { match: { params: { id } } } = this.props;
+    const reviews = results.filter((review) => review.id === id);
+    this.setState({
+      reviews,
+    });
+  }
+
+  saveReviewLocalStorage(event) {
+    event.preventDefault();
+    const { match: { params: { id } } } = this.props;
+    const { emailReview, radioReview, textAreaReview } = this.props;
+    const review = { emailReview, radioReview, textAreaReview, id };
+    saveReview(review);
+  }
+
+  saveProductLocalStorage() {
+    const { productDetail } = this.state;
+    addProduct(productDetail);
   }
 
   findDetailProduct() {
@@ -27,17 +56,109 @@ export default class DetailProduct extends Component {
   }
 
   render() {
-    const { productDetail: { title, price, thumbnail }, productDetail } = this.state;
+    const { productDetail:
+       { title, price, thumbnail },
+    productDetail,
+    reviews } = this.state;
+    const { handleChange, emailReview, textAreaReview } = this.props;
     return (
       <div>
         {productDetail
           && (
             <div>
-              <h1 data-testid="product-detail-name">{ title }</h1>
-              <h2>{`R$${price}`}</h2>
-              <img src={ thumbnail } alt="product" />
+              <div>
+                <h1 data-testid="product-detail-name">{ title }</h1>
+                <h2>{`R$${price}`}</h2>
+                <img src={ thumbnail } alt="product" />
+              </div>
+              <div>
+                <form>
+                  <input
+                    onChange={ handleChange }
+                    name="emailReview"
+                    value={ emailReview }
+                    type="email"
+                  />
+                  <input
+                    onChange={ handleChange }
+                    name="radioReview"
+                    value="1"
+                    type="radio"
+                  />
+                  <input
+                    onChange={ handleChange }
+                    name="radioReview"
+                    value="2"
+                    type="radio"
+                  />
+                  <input
+                    onChange={ handleChange }
+                    name="radioReview"
+                    value="3"
+                    type="radio"
+                  />
+                  <input
+                    onChange={ handleChange }
+                    name="radioReview"
+                    value="4"
+                    type="radio"
+                  />
+                  <input
+                    onChange={ handleChange }
+                    name="radioReview"
+                    value="5"
+                    type="radio"
+                  />
+                  <textarea
+                    data-testid="product-detail-evaluation"
+                    name="textAreaReview"
+                    value={ textAreaReview }
+                    onChange={ handleChange }
+                  />
+                  <button
+                    onClick={ this.saveReviewLocalStorage }
+                    type="button"
+                  >
+                    Avaliar
+
+                  </button>
+                </form>
+              </div>
+              <div>
+                {reviews && reviews.map((review) => (
+                  <div key={ review.id }>
+                    <p>
+                      { review.emailReview }
+                      {' '}
+                      { review.radioReview }
+                    </p>
+                    {review.textAreaReview.length > 1 && (
+                      <p>{ review.textAreaReview }</p>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
+        <button
+          data-testid="product-detail-add-to-cart"
+          onClick={ this.saveProductLocalStorage }
+          type="button"
+        >
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs0BWuHgxw4SK8_
+            8IPduATr0KXh4mgQjxIDA&usqp=CAU"
+            alt="logo cart"
+            width="30px"
+          />
+        </button>
+        <Link data-testid="shopping-cart-button" to="/shoppingCart">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs0BWuHgxw4SK8_
+            8IPduATr0KXh4mgQjxIDA&usqp=CAU"
+            alt="logo cart"
+          />
+        </Link>
       </div>
     );
   }
@@ -49,5 +170,9 @@ DetailProduct.propTypes = {
       id: PropTypes.string,
     }),
   }).isRequired,
-  queryResults: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  emailReview: PropTypes.string.isRequired,
+  radioReview: PropTypes.string.isRequired,
+  textAreaReview: PropTypes.string.isRequired,
+  queryResults: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

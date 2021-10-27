@@ -2,13 +2,17 @@ if (!JSON.parse(localStorage.getItem('cartItems'))) {
   localStorage.setItem('cartItems', JSON.stringify([]));
 }
 
-const readCartProduct = () => JSON.parse(localStorage.getItem('cartItems'));
+if (!JSON.parse(localStorage.getItem('commentReview'))) {
+  localStorage.setItem('commentReview', JSON.stringify([]));
+}
 
-const saveCartProduct = (cartProduct) => localStorage
-  .setItem('cartItems', JSON.stringify(cartProduct));
+const readCartProduct = (key) => JSON.parse(localStorage.getItem(key));
+
+const saveCartProduct = (cartProduct, key) => localStorage
+  .setItem(key, JSON.stringify(cartProduct));
 
 export const addProduct = (product) => {
-  const cartProduct = readCartProduct();
+  const cartProduct = readCartProduct('cartItems');
   const { id, price, thumbnail, title } = product;
 
   const item = {
@@ -23,21 +27,28 @@ export const addProduct = (product) => {
 
   if (cartProductsIds.filter((cartItem) => cartItem === item.id) < 1) {
     if (product) {
-      saveCartProduct([...cartProduct, item]);
+      saveCartProduct([...cartProduct, item], 'cartItems');
     }
 
     if (!cartProduct) {
-      saveCartProduct(item);
+      saveCartProduct(item, 'cartItems');
     }
   }
 };
 
 export const removeProduct = (product) => {
-  const cartProduct = readCartProduct();
-  saveCartProduct(cartProduct.filter((item) => item.id !== product.id));
+  const cartProduct = readCartProduct('cartItems');
+  saveCartProduct(cartProduct.filter((item) => item.id !== product.id), 'cartItems');
 };
 
-export const getCartProduct = () => {
-  const cartProduct = readCartProduct();
+export const getCartProduct = (key) => {
+  const cartProduct = readCartProduct(key);
   return cartProduct;
+};
+
+export const saveReview = (review) => {
+  const cartProduct = readCartProduct('commentReview');
+  if (review) {
+    saveCartProduct([...cartProduct, review], 'commentReview');
+  }
 };

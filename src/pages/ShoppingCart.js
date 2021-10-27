@@ -17,7 +17,7 @@ export default class ShoppingCart extends Component {
   }
 
   getLocalStorageItems() {
-    const shoppingCartItems = getCartProduct();
+    const shoppingCartItems = getCartProduct('cartItems');
     this.setState({
       shoppingCartItems,
     });
@@ -56,6 +56,7 @@ export default class ShoppingCart extends Component {
 
   render() {
     const { shoppingCartItems } = this.state;
+
     if (shoppingCartItems.length < 1) {
       return (
         <div>
@@ -64,7 +65,12 @@ export default class ShoppingCart extends Component {
       );
     }
 
-    return (
+    const notFound = (
+      <div>
+        <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
+      </div>
+    );
+    const shoppingCartCard = (
       <div>
         {shoppingCartItems.map((product) => (
           <div key={ product.id }>
@@ -92,6 +98,7 @@ export default class ShoppingCart extends Component {
             </button>
           </div>
         ))}
+        ;
         <button
           type="button"
         >
@@ -99,5 +106,41 @@ export default class ShoppingCart extends Component {
         </button>
       </div>
     );
+
+    return shoppingCartItems ? shoppingCartCard : notFound;
+    //       <div>
+    //         {shoppingCartItems.map((product) => (
+    //           <div key={ product.id }>
+    //             <p data-testid="shopping-cart-product-name">{product.title}</p>
+    //             <button
+    //               type="button"
+    //               onClick={ () => this.updateState(product) }
+    //             >
+    //               X
+    //             </button>
+    //             <button
+    //               type="button"
+    //               onClick={ () => this.decreaseQuantity(product) }
+    //               data-testid="product-decrease-quantity"
+    //             >
+    //               -
+    //             </button>
+    //             <p data-testid="shopping-cart-product-quantity">{product.quantity}</p>
+    //             <button
+    //               type="button"
+    //               onClick={ () => this.increaseQuantity(product) }
+    //               data-testid="product-increase-quantity"
+    //             >
+    //               +
+    //             </button>
+    //           </div>
+    //         ))}
+    //         <button
+    //           type="button"
+    //         >
+    //           Finalizar Compra
+    //         </button>
+    //       </div>
+    //     );
   }
 }
