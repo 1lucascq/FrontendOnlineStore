@@ -48,6 +48,7 @@ export default class DetailProduct extends Component {
     });
   }
 
+  // A
   render() {
     const { productDetail:
        { title, price, thumbnail },
