@@ -15,6 +15,9 @@ export default class App extends React.Component {
       query: '',
       queryResults: [],
       categorieId: '',
+      emailReview: '',
+      radioReview: '',
+      textAreaReview: '',
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -40,7 +43,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { queryResults } = this.state;
+    const { queryResults, emailReview, radioReview, textAreaReview } = this.state;
     return (
       <BrowserRouter>
         <Switch>
@@ -60,6 +63,10 @@ export default class App extends React.Component {
             render={ (props) => (<DetailProduct
               queryResults={ queryResults }
               { ... props }
+              handleChange={ this.handleChange }
+              emailReview={ emailReview }
+              radioReview={ radioReview }
+              textAreaReview={ textAreaReview }
             />) }
           />
         </Switch>

@@ -16,7 +16,7 @@ export default class ShoppingCart extends Component {
   }
 
   getLocalStorageItems() {
-    const shoppingCartItems = getFavoriteProduct();
+    const shoppingCartItems = getFavoriteProduct('cartItems');
     this.setState({
       shoppingCartItems,
     });
