@@ -32,7 +32,6 @@ export const addProduct = (product) => {
   }
 };
 
-// Ajustar trackId
 export const removeProduct = (product) => {
   const cartProduct = readCartProduct();
   saveCartProduct(cartProduct.filter((item) => item.id !== product.id));
