@@ -6,6 +6,7 @@ import { getProductsFromCategoryAndQuery } from './services/api';
 import Home from './pages/Home';
 import ShoppingCart from './pages/ShoppingCart';
 import DetailProduct from './pages/DetailProduct';
+import checkout from './pages/checkout';
 
 export default class App extends React.Component {
   constructor() {
@@ -56,7 +57,11 @@ export default class App extends React.Component {
               queryResults={ queryResults }
             />) }
           />
-          <Route exact path="/shoppingCart" component={ ShoppingCart } />
+          <Route
+            exact
+            path="/shoppingCart"
+            component={ ShoppingCart }
+          />
           <Route
             exact
             path="/detailProduct/:id"
@@ -68,6 +73,11 @@ export default class App extends React.Component {
               radioReview={ radioReview }
               textAreaReview={ textAreaReview }
             />) }
+          />
+          <Route
+            exact
+            path="/checkout"
+            component={ checkout }
           />
         </Switch>
       </BrowserRouter>
