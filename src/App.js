@@ -44,7 +44,11 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { queryResults, emailReview, radioReview, textAreaReview } = this.state;
+    const {
+      queryResults,
+      emailReview,
+      radioReview,
+      textAreaReview } = this.state;
     return (
       <BrowserRouter>
         <Switch>

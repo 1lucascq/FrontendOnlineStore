@@ -12,6 +12,9 @@ export default class CardProduct extends Component {
   saveInLocalStorage() {
     const { product } = this.props;
     addProduct(product);
+    // const [, updateState] = React.useState();
+    // const forceUpdate = React.useCallback(() => updateState({}), []);
+    // forceUpdate();
   }
 
   render() {
