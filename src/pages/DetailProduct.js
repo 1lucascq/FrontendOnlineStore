@@ -60,7 +60,7 @@ export default class DetailProduct extends Component {
 
   render() {
     const { productDetail:
-       { title, price, thumbnail, shipping },
+      { title, price, thumbnail, shipping },
     productDetail,
     reviews } = this.state;
     const freeShipping = shipping.free_shipping;
