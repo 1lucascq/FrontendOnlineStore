@@ -10,8 +10,9 @@ export default class CardProduct extends Component {
   }
 
   saveInLocalStorage() {
-    const { product } = this.props;
+    const { product, getCartQuantity } = this.props;
     addProduct(product);
+    getCartQuantity();
   }
 
   render() {
@@ -50,4 +51,5 @@ CardProduct.propTypes = {
     title: PropTypes.string,
     id: PropTypes.string,
   }).isRequired,
+  getCartQuantity: PropTypes.func.isRequired,
 };

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getCartProduct, removeProduct } from '../services/manageCart';
+import { addProduct, getCartProduct, removeProduct } from '../services/manageCart';
 
 export default class ShoppingCart extends Component {
   constructor() {
@@ -14,6 +14,12 @@ export default class ShoppingCart extends Component {
 
   componentDidMount() {
     this.getLocalStorageItems();
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem('cartItems', JSON.stringify([]));
+    const { shoppingCartItems } = this.state;
+    shoppingCartItems.map((item) => addProduct(item));
   }
 
   getLocalStorageItems() {
