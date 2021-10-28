@@ -11,10 +11,14 @@ const readCartProduct = (key) => JSON.parse(localStorage.getItem(key));
 const saveCartProduct = (cartProduct, key) => localStorage
   .setItem(key, JSON.stringify(cartProduct));
 
+export const removeProduct = (product) => {
+  const cartProduct = readCartProduct('cartItems');
+  saveCartProduct(cartProduct.filter((item) => item.id !== product.id), 'cartItems');
+};
+
 export const addProduct = (product) => {
   const cartProduct = readCartProduct('cartItems');
 
-  const quantityState = product.quantity ? product.quantity : 1;
   const { id, price, thumbnail, title } = product;
   const availableQuantity = product.available_quantity;
   const item = {
@@ -23,8 +27,9 @@ export const addProduct = (product) => {
     price,
     thumbnail,
     availableQuantity,
-    quantity: quantityState,
+    quantity: 1,
   };
+
   const cartProductsIds = cartProduct.map((thisItem) => thisItem.id);
 
   if (cartProductsIds.filter((cartItem) => cartItem === item.id) < 1) {
@@ -35,12 +40,20 @@ export const addProduct = (product) => {
     if (!cartProduct) {
       saveCartProduct(item, 'cartItems');
     }
+  } else {
+    removeProduct(product);
+    const qu = product.quantity + 1;
+    const quantityValue = { ...product, pro qu}
+    console.log(product);
+    saveCartProduct([...cartProduct, product], 'cartItems');
   }
 };
 
-export const removeProduct = (product) => {
-  const cartProduct = readCartProduct('cartItems');
-  saveCartProduct(cartProduct.filter((item) => item.id !== product.id), 'cartItems');
+export const addProductQuantity = (product) => {
+  const cardItens = readCartProduct('cardItens');
+  if (product) {
+    saveCartProduct([...cardItens, product], 'cardItens');
+  }
 };
 
 export const getCartProduct = (key) => {

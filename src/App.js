@@ -51,8 +51,12 @@ export default class App extends React.Component {
   }
 
   getCartQuantity() {
-    const products = getCartProduct('cartItems').length;
-    this.setState({ quantity: products });
+    const response = getCartProduct('cartItems');
+    if (response.length > 0) {
+      const products = response.map((item) => item.quantity);
+      const result = products.reduce((acc, curr) => acc + curr);
+      this.setState({ quantity: result });
+    }
   }
 
   render() {
