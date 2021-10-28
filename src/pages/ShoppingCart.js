@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { getCartProduct, removeProduct } from '../services/manageCart';
 
 export default class ShoppingCart extends Component {
@@ -98,49 +99,12 @@ export default class ShoppingCart extends Component {
             </button>
           </div>
         ))}
-        ;
-        <button
-          type="button"
-        >
-          Finalizar Compra
-        </button>
+        <Link to="/checkout" data-testid="checkout-products">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCxnRWU3UzTwR5LtVlg4tpTBGCbZi0SzB2cA&usqp=CAU" alt="checkout" />
+        </Link>
       </div>
     );
 
     return shoppingCartItems ? shoppingCartCard : notFound;
-    //       <div>
-    //         {shoppingCartItems.map((product) => (
-    //           <div key={ product.id }>
-    //             <p data-testid="shopping-cart-product-name">{product.title}</p>
-    //             <button
-    //               type="button"
-    //               onClick={ () => this.updateState(product) }
-    //             >
-    //               X
-    //             </button>
-    //             <button
-    //               type="button"
-    //               onClick={ () => this.decreaseQuantity(product) }
-    //               data-testid="product-decrease-quantity"
-    //             >
-    //               -
-    //             </button>
-    //             <p data-testid="shopping-cart-product-quantity">{product.quantity}</p>
-    //             <button
-    //               type="button"
-    //               onClick={ () => this.increaseQuantity(product) }
-    //               data-testid="product-increase-quantity"
-    //             >
-    //               +
-    //             </button>
-    //           </div>
-    //         ))}
-    //         <button
-    //           type="button"
-    //         >
-    //           Finalizar Compra
-    //         </button>
-    //       </div>
-    //     );
   }
 }
