@@ -13,6 +13,9 @@ export default class DetailProduct extends Component {
         price: '',
         thumbnail: '',
         quantity: 0,
+        shipping: {
+          free_shipping: false,
+        },
       },
       reviews: [],
     };
@@ -65,10 +68,11 @@ export default class DetailProduct extends Component {
 
   render() {
     const { productDetail:
-       { title, price, thumbnail },
+      { title, price, thumbnail, shipping },
     productDetail,
     reviews,
     quantity } = this.state;
+    const freeShipping = shipping.free_shipping;
     const { handleChange, emailReview, textAreaReview } = this.props;
     return (
       <div>
@@ -79,6 +83,10 @@ export default class DetailProduct extends Component {
                 <h1 data-testid="product-detail-name">{ title }</h1>
                 <h2>{`R$${price}`}</h2>
                 <img src={ thumbnail } alt="product" />
+                <div>
+                  { freeShipping
+                    && <span data-testid="free-shipping">Frete Grátis</span> }
+                </div>
               </div>
               <div>
                 <form>

@@ -15,9 +15,16 @@ export const addProduct = (product) => {
   const cartProduct = readCartProduct('cartItems');
 
   const quantityState = product.quantity ? product.quantity : 1;
-
-  const item = { ...product, quantityState };
-
+  const { id, price, thumbnail, title } = product;
+  const availableQuantity = product.available_quantity;
+  const item = {
+    id,
+    title,
+    price,
+    thumbnail,
+    availableQuantity,
+    quantity: quantityState,
+  };
   const cartProductsIds = cartProduct.map((thisItem) => thisItem.id);
 
   if (cartProductsIds.filter((cartItem) => cartItem === item.id) < 1) {

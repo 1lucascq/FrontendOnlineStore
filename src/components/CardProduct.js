@@ -16,7 +16,9 @@ export default class CardProduct extends Component {
   }
 
   render() {
-    const { product: { price, thumbnail, title, id } } = this.props;
+    const { product:
+      { price, thumbnail, title, id, shipping } } = this.props;
+    const freeShipping = shipping.free_shipping;
     return (
       <div data-testid="product">
         <Link
@@ -39,6 +41,9 @@ export default class CardProduct extends Component {
             width="30px"
           />
         </button>
+        <div>
+          { freeShipping && <span data-testid="free-shipping">Frete Grátis</span> }
+        </div>
       </div>
     );
   }
@@ -50,6 +55,9 @@ CardProduct.propTypes = {
     thumbnail: PropTypes.string,
     title: PropTypes.string,
     id: PropTypes.string,
+    shipping: PropTypes.shape({
+      free_shipping: PropTypes.string,
+    }),
   }).isRequired,
   getCartQuantity: PropTypes.func.isRequired,
 };
