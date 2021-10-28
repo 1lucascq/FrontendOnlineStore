@@ -14,15 +14,15 @@ const saveCartProduct = (cartProduct, key) => localStorage
 export const addProduct = (product) => {
   const cartProduct = readCartProduct('cartItems');
   const { id, price, thumbnail, title } = product;
-
+  const availableQuantity = product.available_quantity;
   const item = {
     id,
     title,
     price,
     thumbnail,
+    availableQuantity,
     quantity: 1,
   };
-
   const cartProductsIds = cartProduct.map((thisItem) => thisItem.id);
 
   if (cartProductsIds.filter((cartItem) => cartItem === item.id) < 1) {
