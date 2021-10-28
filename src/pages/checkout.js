@@ -1,14 +1,46 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import boleto from '../image/boleto.png';
 import visa from '../image/visa.png';
 import elo from '../image/elo.png';
 
 export default class checkout extends Component {
+  constructor() {
+    super();
+    this.showTotalPrice = this.showTotalPrice.bind(this);
+  }
+
+  showTotalPrice() {
+    const { location: { state: { shoppingCartItems } } } = this.props;
+    const totalPrice = shoppingCartItems
+      .map((product) => product.price * product.quantity);
+    const allProductsPrices = totalPrice.reduce((acc, current) => acc + current);
+    return allProductsPrices;
+  }
+
   render() {
+    const { location: { state: { shoppingCartItems } } } = this.props;
+    const checkoutCard = (
+      <div>
+        {shoppingCartItems.map((product) => (
+          <div key={ product.id }>
+            <p data-testid="shopping-cart-product-name">{product.title}</p>
+            <p>{ `Preço unitário: R$${product.price}` }</p>
+            <p>{ `Preço total: R$${product.price * product.quantity}` }</p>
+          </div>
+        ))}
+        <div>
+          <p>
+            {`TOTAL: R$${this.showTotalPrice()}`}
+            {' '}
+          </p>
+        </div>
+      </div>
+    );
     return (
       <div>
         <section>
-          <h1>info produtos</h1>
+          { checkoutCard }
         </section>
         <section>
           <form>
@@ -87,3 +119,11 @@ export default class checkout extends Component {
     );
   }
 }
+
+checkout.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      shoppingCartItems: PropTypes.shape(PropTypes.object),
+    }),
+  }).isRequired,
+};
