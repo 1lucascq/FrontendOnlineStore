@@ -11,6 +11,7 @@ export default class ShoppingCart extends Component {
     this.getLocalStorageItems = this.getLocalStorageItems.bind(this);
     this.increaseQuantity = this.increaseQuantity.bind(this);
     this.decreaseQuantity = this.decreaseQuantity.bind(this);
+    this.showTotalPrice = this.showTotalPrice.bind(this);
   }
 
   componentDidMount() {
@@ -63,27 +64,34 @@ export default class ShoppingCart extends Component {
     this.setState({ shoppingCartItems: updatedCart });
   }
 
+  showTotalPrice() {
+    const { shoppingCartItems } = this.state;
+    const totalPrice = shoppingCartItems
+      .map((product) => product.price * product.quantity);
+    const allProductsPrices = totalPrice.reduce((acc, current) => acc + current);
+    return allProductsPrices;
+  }
+
   render() {
     const { shoppingCartItems } = this.state;
-
-    if (shoppingCartItems.length < 1) {
-      return (
-        <div>
-          <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
-        </div>
-      );
-    }
 
     const notFound = (
       <div>
         <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
       </div>
     );
+
+    if (shoppingCartItems.length < 1) {
+      return notFound;
+    }
+
     const shoppingCartCard = (
       <div>
         {shoppingCartItems.map((product) => (
           <div key={ product.id }>
             <p data-testid="shopping-cart-product-name">{product.title}</p>
+            <p>{ `Preço unitário: R$${product.price}` }</p>
+            <p>{ `Preço total: R$${product.price * product.quantity}` }</p>
             <button
               type="button"
               onClick={ () => this.updateState(product) }
@@ -107,8 +115,24 @@ export default class ShoppingCart extends Component {
             </button>
           </div>
         ))}
-        <Link to="/checkout" data-testid="checkout-products">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCxnRWU3UzTwR5LtVlg4tpTBGCbZi0SzB2cA&usqp=CAU" alt="checkout" />
+        <div>
+          <p>
+            {`TOTAL: R$${this.showTotalPrice()}`}
+            {' '}
+          </p>
+        </div>
+        <Link
+          to={ {
+            pathname: '/checkout',
+            state: { shoppingCartItems },
+          } }
+          data-testid="checkout-products"
+        >
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCxnRWU3UzTwR5LtVlg4tpTBGCbZi0SzB2cA&usqp=CAU"
+            alt="checkout"
+            width="100px"
+          />
         </Link>
       </div>
     );
