@@ -6,31 +6,49 @@ if (!JSON.parse(localStorage.getItem('commentReview'))) {
   localStorage.setItem('commentReview', JSON.stringify([]));
 }
 
-const readFavoriteProduct = (key) => JSON.parse(localStorage.getItem(key));
+const readCartProduct = (key) => JSON.parse(localStorage.getItem(key));
 
-const saveFavoriteProduct = (favoriteProduct, key) => localStorage
-  .setItem(key, JSON.stringify(favoriteProduct));
+const saveCartProduct = (cartProduct, key) => localStorage
+  .setItem(key, JSON.stringify(cartProduct));
 
 export const addProduct = (product) => {
-  const favoriteProduct = readFavoriteProduct('cartItems');
-  if (product) {
-    saveFavoriteProduct([...favoriteProduct, product], 'cartItems');
+  const cartProduct = readCartProduct('cartItems');
+  const { id, price, thumbnail, title } = product;
+
+  const item = {
+    id,
+    title,
+    price,
+    thumbnail,
+    quantity: 1,
+  };
+
+  const cartProductsIds = cartProduct.map((thisItem) => thisItem.id);
+
+  if (cartProductsIds.filter((cartItem) => cartItem === item.id) < 1) {
+    if (product) {
+      saveCartProduct([...cartProduct, item], 'cartItems');
+    }
+
+    if (!cartProduct) {
+      saveCartProduct(item, 'cartItems');
+    }
   }
 };
-// Ajustar trackId
+
 export const removeProduct = (product) => {
-  const favoriteProduct = readFavoriteProduct('cartItems');
-  saveFavoriteProduct(favoriteProduct.filter((s) => s.trackId !== product.trackId));
+  const cartProduct = readCartProduct('cartItems');
+  saveCartProduct(cartProduct.filter((item) => item.id !== product.id), 'cartItems');
 };
 
-export const getFavoriteProduct = (key) => {
-  const favoriteProduct = readFavoriteProduct(key);
-  return favoriteProduct;
+export const getCartProduct = (key) => {
+  const cartProduct = readCartProduct(key);
+  return cartProduct;
 };
 
 export const saveReview = (review) => {
-  const favoriteProduct = readFavoriteProduct('commentReview');
+  const cartProduct = readCartProduct('commentReview');
   if (review) {
-    saveFavoriteProduct([...favoriteProduct, review], 'commentReview');
+    saveCartProduct([...cartProduct, review], 'commentReview');
   }
 };
