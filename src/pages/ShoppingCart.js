@@ -28,11 +28,19 @@ export default class ShoppingCart extends Component {
     const { shoppingCartItems } = this.state;
     const { id, quantity } = product;
     const item = shoppingCartItems
-      .map((it) => (it.id === id ? { ...it, quantity: quantity + 1 } : it));
+      .map((cartItem) => (cartItem.id === id ? { ...cartItem,
+        quantity: this.checkMaxQuantity(cartItem, quantity) } : cartItem));
 
     this.setState({
       shoppingCartItems: item,
     });
+  }
+
+  checkMaxQuantity(it, quantity) {
+    if (it.quantity === it.availableQuantity) {
+      return quantity;
+    }
+    return quantity + 1;
   }
 
   decreaseQuantity(product) {
