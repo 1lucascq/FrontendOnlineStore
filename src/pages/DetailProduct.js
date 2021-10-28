@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { saveReview, getFavoriteProduct, addProduct } from '../services/manageCart';
+import { saveReview, getCartProduct, addProduct } from '../services/manageCart';
 
 export default class DetailProduct extends Component {
   constructor() {
@@ -26,7 +26,7 @@ export default class DetailProduct extends Component {
   }
 
   getReviewLocalStorage() {
-    const results = getFavoriteProduct('commentReview');
+    const results = getCartProduct('commentReview');
     const { match: { params: { id } } } = this.props;
     const reviews = results.filter((review) => review.id === id);
     this.setState({
@@ -142,7 +142,7 @@ export default class DetailProduct extends Component {
           )}
         <button
           data-testid="product-detail-add-to-cart"
-          onClick={ this.saveInLocalStorage }
+          onClick={ this.saveProductLocalStorage }
           type="button"
         >
           <img
