@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { saveReview, getCartProduct, addProduct } from '../services/manageCart';
+import Cart from '../components/Cart';
 
 export default class DetailProduct extends Component {
   constructor() {
@@ -152,13 +152,7 @@ export default class DetailProduct extends Component {
             width="30px"
           />
         </button>
-        <Link data-testid="shopping-cart-button" to="/shoppingCart">
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs0BWuHgxw4SK8_
-            8IPduATr0KXh4mgQjxIDA&usqp=CAU"
-            alt="logo cart"
-          />
-        </Link>
+        <Cart />
       </div>
     );
   }

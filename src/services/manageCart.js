@@ -13,15 +13,8 @@ const saveCartProduct = (cartProduct, key) => localStorage
 
 export const addProduct = (product) => {
   const cartProduct = readCartProduct('cartItems');
-  const { id, price, thumbnail, title } = product;
 
-  const item = {
-    id,
-    title,
-    price,
-    thumbnail,
-    quantity: 1,
-  };
+  const item = { ...product, quantity: 1 };
 
   const cartProductsIds = cartProduct.map((thisItem) => thisItem.id);
 

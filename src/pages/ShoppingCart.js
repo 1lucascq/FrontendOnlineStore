@@ -27,7 +27,7 @@ export default class ShoppingCart extends Component {
     const { shoppingCartItems } = this.state;
     const { id, quantity } = product;
     const item = shoppingCartItems
-      .map((it) => (it.id === id ? { ...it, quantity: quantity + 1 } : it));
+      .map((it) => (it.id === id && { ...it, quantity: quantity + 1 }));
 
     this.setState({
       shoppingCartItems: item,
@@ -38,7 +38,7 @@ export default class ShoppingCart extends Component {
     const { shoppingCartItems } = this.state;
     const { id, quantity } = product;
     const cartItems = shoppingCartItems
-      .map((it) => (it.id === id ? { ...it, quantity: quantity - 1 } : it));
+      .map((it) => (it.id === id && { ...it, quantity: quantity - 1 }));
 
     if (quantity < 2) return this.updateState(product);
 
@@ -108,39 +108,5 @@ export default class ShoppingCart extends Component {
     );
 
     return shoppingCartItems ? shoppingCartCard : notFound;
-    //       <div>
-    //         {shoppingCartItems.map((product) => (
-    //           <div key={ product.id }>
-    //             <p data-testid="shopping-cart-product-name">{product.title}</p>
-    //             <button
-    //               type="button"
-    //               onClick={ () => this.updateState(product) }
-    //             >
-    //               X
-    //             </button>
-    //             <button
-    //               type="button"
-    //               onClick={ () => this.decreaseQuantity(product) }
-    //               data-testid="product-decrease-quantity"
-    //             >
-    //               -
-    //             </button>
-    //             <p data-testid="shopping-cart-product-quantity">{product.quantity}</p>
-    //             <button
-    //               type="button"
-    //               onClick={ () => this.increaseQuantity(product) }
-    //               data-testid="product-increase-quantity"
-    //             >
-    //               +
-    //             </button>
-    //           </div>
-    //         ))}
-    //         <button
-    //           type="button"
-    //         >
-    //           Finalizar Compra
-    //         </button>
-    //       </div>
-    //     );
   }
 }
