@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { getFavoriteProduct } from '../services/manageCart';
 
 export default class ShoppingCart extends Component {
@@ -49,6 +50,9 @@ export default class ShoppingCart extends Component {
             <p data-testid="shopping-cart-product-quantity">{this.quantity(product)}</p>
           </div>
         ))}
+        <Link to="/checkout" data-testid="checkout-products">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCxnRWU3UzTwR5LtVlg4tpTBGCbZi0SzB2cA&usqp=CAU" alt="checkout" />
+        </Link>
       </div>
     );
   }
