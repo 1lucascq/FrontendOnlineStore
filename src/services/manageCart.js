@@ -39,9 +39,11 @@ export const addProduct = (product) => {
       saveCartProduct(item, 'cartItems');
     }
   } else {
+    localStorage.setItem('cartItems', JSON.stringify([]));
+    const x = cartProduct.filter((it) => it.id !== product.id);
     const productLocalStorege = cartProduct.find((it) => it.id === product.id);
     productLocalStorege.quantity += 1;
-    saveCartProduct([...cartProduct, productLocalStorege], 'cartItems');
+    saveCartProduct([...x, productLocalStorege], 'cartItems');
   }
 };
 

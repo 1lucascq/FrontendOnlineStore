@@ -25,15 +25,19 @@ export default class DetailProduct extends Component {
     this.getCartQuantity = this.getCartQuantity.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.findDetailProduct();
     this.getReviewLocalStorage();
     this.getCartQuantity();
   }
 
   getCartQuantity() {
-    const response = getCartProduct('cartItems').length;
-    this.setState({ quantity: response });
+    const response = getCartProduct('cartItems');
+    if (response.length > 0) {
+      const products = response.map((item) => item.quantity);
+      const result = products.reduce((acc, curr) => acc + curr);
+      this.setState({ quantity: result });
+    }
   }
 
   getReviewLocalStorage() {
