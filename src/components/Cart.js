@@ -21,5 +21,5 @@ export default class Cart extends Component {
 }
 
 Cart.propTypes = {
-  quantity: PropTypes.string.isRequired,
+  quantity: PropTypes.number.isRequired,
 };
