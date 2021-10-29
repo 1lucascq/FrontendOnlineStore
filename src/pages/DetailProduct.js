@@ -32,8 +32,8 @@ export default class DetailProduct extends Component {
   }
 
   getCartQuantity() {
-    const products = getCartProduct('cartItems').length;
-    this.setState({ quantity: products });
+    const response = getCartProduct('cartItems').length;
+    this.setState({ quantity: response });
   }
 
   getReviewLocalStorage() {

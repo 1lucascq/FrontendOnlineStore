@@ -57,7 +57,7 @@ export default class ShoppingCart extends Component {
     const { shoppingCartItems } = this.state;
     const { id, quantity } = product;
     const cartItems = shoppingCartItems
-      .map((it) => (it.id === id && { ...it, quantity: quantity - 1 }));
+      .map((it) => (it.id === id ? { ...it, quantity: quantity - 1 } : it));
 
     if (quantity < 2) return this.updateState(product);
 

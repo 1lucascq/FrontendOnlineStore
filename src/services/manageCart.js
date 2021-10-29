@@ -18,7 +18,6 @@ export const removeProduct = (product) => {
 
 export const addProduct = (product) => {
   const cartProduct = readCartProduct('cartItems');
-
   const { id, price, thumbnail, title } = product;
   const availableQuantity = product.available_quantity;
   const item = {
@@ -32,27 +31,24 @@ export const addProduct = (product) => {
 
   const cartProductsIds = cartProduct.map((thisItem) => thisItem.id);
 
-  if (cartProductsIds.filter((cartItem) => cartItem === item.id) < 1) {
+  if (!cartProductsIds.includes(id)) {
     if (product) {
       saveCartProduct([...cartProduct, item], 'cartItems');
     }
-
     if (!cartProduct) {
       saveCartProduct(item, 'cartItems');
     }
   } else {
-    removeProduct(product);
-    const qu = product.quantity + 1;
-    const quantityValue = { ...product, pro qu}
-    console.log(product);
-    saveCartProduct([...cartProduct, product], 'cartItems');
+    const productLocalStorege = cartProduct.find((it) => it.id === product.id);
+    productLocalStorege.quantity += 1;
+    saveCartProduct([...cartProduct, productLocalStorege], 'cartItems');
   }
 };
 
 export const addProductQuantity = (product) => {
-  const cardItens = readCartProduct('cardItens');
+  const cardItens = readCartProduct('cartItems');
   if (product) {
-    saveCartProduct([...cardItens, product], 'cardItens');
+    saveCartProduct([...cardItens, product], 'cartItems');
   }
 };
 
