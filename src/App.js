@@ -6,6 +6,7 @@ import { getProductsFromCategoryAndQuery } from './services/api';
 import Home from './pages/Home';
 import ShoppingCart from './pages/ShoppingCart';
 import DetailProduct from './pages/DetailProduct';
+import { getCartProduct } from './services/manageCart';
 import checkout from './pages/checkout';
 
 export default class App extends React.Component {
@@ -19,10 +20,16 @@ export default class App extends React.Component {
       emailReview: '',
       radioReview: '',
       textAreaReview: '',
+      quantity: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.getCartQuantity = this.getCartQuantity.bind(this);
+  }
+
+  componentDidMount() {
+    this.getCartQuantity();
   }
 
   handleChange({ target }) {
@@ -43,12 +50,22 @@ export default class App extends React.Component {
     this.setState({ queryResults: queryResults.results });
   }
 
+  getCartQuantity() {
+    const response = getCartProduct('cartItems');
+    if (response.length > 0) {
+      const products = response.map((item) => item.quantity);
+      const result = products.reduce((acc, curr) => acc + curr);
+      this.setState({ quantity: result });
+    }
+  }
+
   render() {
     const {
       queryResults,
       emailReview,
       radioReview,
-      textAreaReview } = this.state;
+      textAreaReview,
+      quantity } = this.state;
     return (
       <BrowserRouter>
         <Switch>
@@ -59,6 +76,8 @@ export default class App extends React.Component {
               handleClick={ this.handleClick }
               handleChange={ this.handleChange }
               queryResults={ queryResults }
+              quantity={ quantity }
+              getCartQuantity={ this.getCartQuantity }
             />) }
           />
           <Route

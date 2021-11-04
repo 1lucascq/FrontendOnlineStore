@@ -12,6 +12,7 @@ export default class DetailProduct extends Component {
         title: '',
         price: '',
         thumbnail: '',
+        quantity: 0,
         shipping: {
           free_shipping: false,
         },
@@ -21,11 +22,22 @@ export default class DetailProduct extends Component {
     this.saveReviewLocalStorage = this.saveReviewLocalStorage.bind(this);
     this.getReviewLocalStorage = this.getReviewLocalStorage.bind(this);
     this.saveProductLocalStorage = this.saveProductLocalStorage.bind(this);
+    this.getCartQuantity = this.getCartQuantity.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.findDetailProduct();
     this.getReviewLocalStorage();
+    this.getCartQuantity();
+  }
+
+  getCartQuantity() {
+    const response = getCartProduct('cartItems');
+    if (response.length > 0) {
+      const products = response.map((item) => item.quantity);
+      const result = products.reduce((acc, curr) => acc + curr);
+      this.setState({ quantity: result });
+    }
   }
 
   getReviewLocalStorage() {
@@ -62,7 +74,8 @@ export default class DetailProduct extends Component {
     const { productDetail:
       { title, price, thumbnail, shipping },
     productDetail,
-    reviews } = this.state;
+    reviews,
+    quantity } = this.state;
     const freeShipping = shipping.free_shipping;
     const { handleChange, emailReview, textAreaReview } = this.props;
     return (
@@ -160,7 +173,7 @@ export default class DetailProduct extends Component {
             width="30px"
           />
         </button>
-        <Cart />
+        <Cart quantity={ quantity } />
       </div>
     );
   }

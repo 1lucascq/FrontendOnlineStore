@@ -10,11 +10,9 @@ export default class CardProduct extends Component {
   }
 
   saveInLocalStorage() {
-    const { product } = this.props;
+    const { product, getCartQuantity } = this.props;
     addProduct(product);
-    // const [, updateState] = React.useState();
-    // const forceUpdate = React.useCallback(() => updateState({}), []);
-    // forceUpdate();
+    getCartQuantity();
   }
 
   render() {
@@ -61,4 +59,5 @@ CardProduct.propTypes = {
       free_shipping: PropTypes.string,
     }),
   }).isRequired,
+  getCartQuantity: PropTypes.func.isRequired,
 };

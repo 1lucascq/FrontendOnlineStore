@@ -6,7 +6,13 @@ import SearchProducts from '../components/SearchProducts';
 
 export default class Home extends Component {
   render() {
-    const { query, queryResults, handleClick, handleChange } = this.props;
+    const {
+      query,
+      queryResults,
+      handleClick,
+      handleChange,
+      quantity,
+      getCartQuantity } = this.props;
     return (
       <div data-testid="home-initial-message">
         <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
@@ -15,8 +21,9 @@ export default class Home extends Component {
           queryResults={ queryResults }
           handleChange={ handleChange }
           handleClick={ handleClick }
+          getCartQuantity={ getCartQuantity }
         />
-        <Cart />
+        <Cart quantity={ quantity } />
         <Categories handleChange={ handleChange } />
       </div>
 
@@ -26,7 +33,9 @@ export default class Home extends Component {
 
 Home.propTypes = {
   query: PropTypes.string.isRequired,
+  quantity: PropTypes.string.isRequired,
   queryResults: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   handleClick: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  getCartQuantity: PropTypes.func.isRequired,
 };

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getCartProduct, removeProduct } from '../services/manageCart';
+import {
+  addProductQuantity,
+  getCartProduct,
+  removeProduct } from '../services/manageCart';
 
 export default class ShoppingCart extends Component {
   constructor() {
@@ -16,6 +19,12 @@ export default class ShoppingCart extends Component {
 
   componentDidMount() {
     this.getLocalStorageItems();
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem('cartItems', JSON.stringify([]));
+    const { shoppingCartItems } = this.state;
+    shoppingCartItems.map((item) => addProductQuantity(item));
   }
 
   getLocalStorageItems() {

@@ -4,7 +4,12 @@ import CardProduct from './CardProduct';
 
 export default class SearchProducts extends Component {
   render() {
-    const { query, queryResults, handleChange, handleClick } = this.props;
+    const {
+      query,
+      queryResults,
+      handleChange,
+      handleClick,
+      getCartQuantity } = this.props;
     return (
       <main>
         <section>
@@ -37,6 +42,7 @@ export default class SearchProducts extends Component {
               .map((results) => (<CardProduct
                 key={ results.id }
                 product={ results }
+                getCartQuantity={ getCartQuantity }
               />))
           ) : (
             <p>Nenhum produto foi encontrado</p>
@@ -52,4 +58,5 @@ SearchProducts.propTypes = {
   queryResults: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   handleChange: PropTypes.func.isRequired,
   handleClick: PropTypes.func.isRequired,
+  getCartQuantity: PropTypes.func.isRequired,
 };
